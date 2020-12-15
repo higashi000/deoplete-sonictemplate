@@ -1,0 +1,28 @@
+name: deoplete-sonictemplate
+on: pull_request
+
+jobs:
+    test:
+        name: deoplete-sonictemplate test
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+
+            - name: Set Up nightly Neovim
+              uses: rhysd/action-setup-vim@v1
+              with:
+                  neovim: true
+                  version: nightly
+
+            - name: install deoplete-sonictemplate
+              run: cd ~/ && git clone https://github.com/higashi000/deoplete-sonictemplate
+
+            - name: Set Up init.vim
+              run: mkdir ~/.config/nvim && cp ./vimrc_test ~/.config/nvim/init.vim
+
+            - name: check vimrc
+              run: cat ~/.config/nvim/init.vim
+
+            - name: run deoplete-sonictemplate test
+              run: nvim +":call deoplete_sonictemplate#test#run()"
+
